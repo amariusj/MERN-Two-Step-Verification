@@ -1,1 +1,1 @@
-web: concurrently \"node server.js\" \"cd client && npm run build\"
+web: concurrently \"node server.js\" \"cd client && npm start\"
