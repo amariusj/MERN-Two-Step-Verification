@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 
     // USE THE STATIC CONTENT FROM THE CLIENT BUILD FOLDER
 
-    app.use(express.static('client/build'))
+    app.use(express.static(path.join(__dirname, "client", "build")))
 
     // SEND THE CLIENT, BUILD, AND INDEX.HTML FILES TO THE ENVIRONMENT
 
