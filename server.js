@@ -38,12 +38,6 @@ app.use(cookieParser())
 
 app.use(express.json())
 
-// A HOME ROUTE FOR THE API
-
-app.get('/', (req, res) => {
-    return res.status(200).json({msg: "Welcome to Amarius' Two-Step Verification API. Feel free to access my Github Repository to see the code used."})
-})
-
 // CHECK IF YOU'RE RUNNING THE APP IN A PRODUCTION ENVIRONMENT
 
 if (process.env.NODE_ENV === 'production') {
