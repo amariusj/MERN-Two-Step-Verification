@@ -24,97 +24,76 @@ const ctrl = {
         
         try {
 
-            // GRAB THE SUBMITTED DATA FROM THE REQUEST BODY
-
-            const {
-                firstName,
-                lastName,
-                email,
-                phoneNumber,
-                password,
-                confirmPassword
-            } = req.body
 
 
             // CREATE A REGULAR EXPRESSION FOR THE FIRST AND LAST NAME
 
-            const validateName = /^[a-z ,.'-]+$/i
-
+            const validateName = /^[a-z,.'-]+$/i
 
             // CREATE A REGULAR EXPRESSION FOR THE EMAIL ADDRESS
 
-            const validateEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+            const validateEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
+            // CREAATE A REGULAR EXPRESSION FOR THE PASSWORD AND CONFIRMATION PASSWORD
 
-            // CREATE AN ARRAY STORE POTENTIAL ERRORS
+            const validatePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
-            let validationErrors = []
+            // GRAB THE SUBMITTED DATA FROM THE REQUEST BODY
 
+            const fields = {
+                firstName: {
+                    value: req.body.firstName,
+                    validator: validateName,
+                    msg: "Please fill out all fields."
+                },
+                lastName: {
+                    value: req.body.lastName,
+                    validator: validateName,
+                    msg: "Please fill out all fields."
+                },
+                email: {
+                    value: req.body.email,
+                    validator: validateEmail,
+                    msg: "Please fill out all fields."
+                },
+                phoneNumber: {
+                    value: req.body.phoneNumber,
+                    msg: "Please fill out all fields."
+                },
+                password: {
+                    value: req.body.password,
+                    validator: validatePassword,
+                    msg: "Your password does not meet our requirements"
+                },
+                confirmPassword: {
+                    value: req.body.confirmPassword,
+                    validator: validatePassword,
+                    msg: "Your password does not meet our requirements"
+                }
+            }
 
-            // VERIFY ALL REQUIRED FIELDS HAVE VALUE
+            // VALIDATE EACH FIELD
 
-            if (!firstName || !firstName.match(validateName)) validationErrors.push("Please enter a first name.")
-            if (!lastName || !lastName.match(validateName)) validationErrors.push("Please enter a last name.")
-            if (!email || !email.match(validateEmail)) validationErrors.push("Please enter an email address.")
-            if (!password) validationErrors.push("Please enter a password.")
-            if (!confirmPassword) validationErrors.push("Please enter a confirmation password.")
-            if (!phoneNumber) validationErrors.push("Please enter a phone number.")
+            for (const [key, value] of Object.entries(fields)) {
+
+                // VALIDATE ALL EXCEPT THE PASSWORDS
+
+                if (!validateInput(value)) {
+
+                    return res.status(400).json({msg: value.msg})
+
+                }
+
+            }
 
 
             // CHECK IF A USER ALREADY EXISTS WITH THAT EMAIL ADDRESS
 
-            const existingUser = await User.findOne({email})
+            const existingUser = await User.findOne({email: fields.email.value})
 
             // IF A USER DOES EXIST, ADD IT TO THE ERRORS ARRAY
 
             if (existingUser) validationErrors.push("A user with that email address already exists")
-
-            // IF ANY ERRORS EXISTS, SEND THEM TO THE CLIENT
-
-            if (validationErrors.length > 0) return res.status(400).json({errors: validationErrors})
-
-
-
-            // PASSWORD VALIDATION
-
-            
-
-            // CREATE AN ARRAY TO STORE POTENTIAL ERRORS
-
-            let passwordErrors = []
-
-            // VERIFY THE PASSWORD IS AT LEAST 8 CHARACTERS LONG
-
-            if (password.length < 8) passwordErrors.push("Your password must be at least 8 characters long.")
-
-            // VVERIFY THE PASSWORD HAS A LOWERCASE LETTER
-
-            if (!password.match(/[a-z]/)) passwordErrors.push("Your password must contain at leasgt one lower case letter.")
-
-            // VERIFY THE PASSWORD HAS AN UPPERCASE LETTER
-
-            if (!password.match(/[A-Z]/)) passwordErrors.push("Your password must contain at least one uppercase letter.")
-
-            // VERIFY THE PASSWORD HAS A DIGIT
-
-            if (!password.match(/[0-9]/)) passwordErrors.push("Your password must contain at least one digit.")
-
-            // VERIFY THE PASSWORD HAS AT LEAST ONE SPECIAL CHARACTER
-
-            if (!password.match(/[!@#\\$%\\^&\\*()]/)) passwordErrors.push("Your password must contain at least one special character.")
-
-            // VVERIFY THE PASSWORDS MATCH
-            if (password !== confirmPassword) passwordErrors.push("Your password and confirmation password do not match.")
-
-
-            // IF ANY ERRORS EXISTS, SEND THEM TO THE CLIENT
-
-            if (passwordErrors.length > 0) return res.status(400).json({errors: passwordErrors})
-
-
-            // SAVE THE USER INFO INTO THE DATABASE
-
-
 
             // HASH THE PASSWORD
 
@@ -455,6 +434,30 @@ const createRefreshToken = (user) => {
     // RETURN THE SIGNED TOKEN VALUE
 
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d'})
+
+}
+
+// VALIDATE AN INPUT FIELD
+
+const validateInput = (field) => {
+
+    // GRAB THE VALUE AND VALIDATOR FROM THE FIELD
+
+    const { value, validator } = field
+
+    // CHECK IF THE SUBMITTED DATA IS NOT VALID
+
+    if (!value || !value.match(validator)) {
+
+        // IF FALSE, SEND AN ERROR TO THE CLIENT
+
+        return false
+
+    } 
+
+    // OTHERWISE, SEND TRUE
+
+    return true
 
 }
 
