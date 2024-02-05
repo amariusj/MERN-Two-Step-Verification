@@ -10,9 +10,9 @@ import { Routes, Route } from 'react-router-dom'
 // IMPORTS ALL PAGES
 
 import Home from './Home/Home'
-import Login from './Login/Login'
+import Login from './Auth/Login'
 import NotFound from './NotFound/NotFound'
-import Register from './Register/Register'
+import Register from './Auth/Register'
 
 // CREATES THE REACT FUNCTIONAL COMPONENT
 

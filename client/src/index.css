@@ -18,3 +18,11 @@ code {
 
 /* --- HEADER CSS --- */
 @import url('./components/Headers/header.css');
+
+
+/* --- HOME CSS --- */
+@import url('./components/Pages/Home/home.css');
+
+
+/* --- AUTH CSS --- */
+@import url('./components/Pages/Auth/auth.css');

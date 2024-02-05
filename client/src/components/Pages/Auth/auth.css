@@ -1,0 +1,29 @@
+.form {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.form .container {
+    background-color: rgb(69, 133, 133);
+    height: auto;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    text-align: start;
+    margin: 2.5rem 1rem 0rem 1rem;
+    font-size: 1.2rem;
+    padding: 0 2.5rem;
+}
+
+.form form {
+    margin: 2rem 0;
+    width: 100%;
+
+}
+
+.form button {
+    width: 100%;
+}
