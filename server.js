@@ -71,7 +71,7 @@ const app = express()
     .catch((err) => {
 
         // IF THERE'S AN ERROR CONNECTING, SEND IT TO THE CONSOLE
-        return res.status(500).json({msg: err.message})
+        console.log(err.message)
     })
 
 
