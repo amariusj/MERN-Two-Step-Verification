@@ -24,11 +24,9 @@ const ctrl = {
         
         try {
 
-
-
             // CREATE A REGULAR EXPRESSION FOR THE FIRST AND LAST NAME
 
-            const validateName = /^[a-z,.'-]+$/i
+            const validateName = /^[a-z,.' -]+$/i
 
             // CREATE A REGULAR EXPRESSION FOR THE EMAIL ADDRESS
 
@@ -72,6 +70,8 @@ const ctrl = {
                 }
             }
 
+            const userData = {}
+
             // VALIDATE EACH FIELD
 
             for (const [key, value] of Object.entries(fields)) {
@@ -84,8 +84,9 @@ const ctrl = {
 
                 }
 
-            }
+                if (value !== req.body.confirmPassword) userData[key] = value.value
 
+            }
 
             // CHECK IF A USER ALREADY EXISTS WITH THAT EMAIL ADDRESS
 
@@ -97,17 +98,11 @@ const ctrl = {
 
             // HASH THE PASSWORD
 
-            const hashedPassword = await bcrypt.hash(password, 10)
+            const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
             // STORE THE USER'S DATA INSIDE AN OBJECT
 
-            const userData = {
-                firstName,
-                lastName,
-                email,
-                phoneNumber,
-                password: hashedPassword
-            }
+            userData.password = hashedPassword
 
             // CREATE A NEW USER DOCUMENT
 
@@ -116,10 +111,6 @@ const ctrl = {
             // SAVE THE NEW USER DOCUMENT TO THE DATABASE
 
             await newUser.save()    
-
-
-            // TWO-STEP VERIFY THE USER
-
 
             // CREATE A VERIFICATION SERVICE
 
@@ -130,7 +121,7 @@ const ctrl = {
 
             await client.verify.v2.services(verificationService.sid)
                 .verifications
-                .create({ to: phoneNumber, channel: 'sms' })
+                .create({ to: `+${fields.phoneNumber.value}`, channel: 'sms' })
 
             // RETURN THE VERIFICATION SERVICE AND  CODE SIDS TO THE CLIENT
 
@@ -170,7 +161,7 @@ const ctrl = {
 
             const verification = await client.verify.v2.services(sid)
                 .verificationChecks
-                .create({ to: phoneNumber, code })
+                .create({ to: `+${phoneNumber}`, code })
 
             // IF THE STATUS IS PENDING, SEND AN ERROR
 
@@ -199,7 +190,8 @@ const ctrl = {
                 // SEND THE ACCESS TOKEN TO THE CLIENT
 
                 return res.status(200).json({
-                    accessToken
+                    accessToken,
+                    msg: "Your account was successfully created!"
                 })
 
             }
@@ -252,7 +244,7 @@ const ctrl = {
 
                 // SEND THE ACCESS TOKEN TO THE CLIENT
 
-                return res.status(200).json({msg: accessToken})
+                return res.status(200).json({accessToken})
 
             })
 
@@ -309,15 +301,16 @@ const ctrl = {
 
             // SEND THE VERIFICATION CODE TO THE SUBMITTED PHONE NUMBER
 
-            client.verify.v2.services(verificationService.sid)
+            await client.verify.v2.services(verificationService.sid)
                 .verifications
-                .create({ to: user.phoneNumber, channel: 'sms' })
+                .create({ to: `+${user.phoneNumber}`, channel: 'sms' })
 
             // RETURN THE VERIFICATION SERVICE AND  CODE SIDS TO THE CLIENT
 
             return res.status(200).json({
                 sid: verificationService.sid,
-                id: user._id
+                id: user._id,
+                phoneNumber: user.phoneNumber
             })
             
 
