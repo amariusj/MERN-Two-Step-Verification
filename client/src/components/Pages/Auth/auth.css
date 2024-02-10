@@ -19,6 +19,28 @@
     max-width: 500px;
 }
 
+.form .react-tel-input input {
+    width: 100% !important;
+    height: 2.3rem !important;
+}
+
+.form .verify {
+    flex-direction: column;
+    text-align: center;
+}
+
+.form .verify form {
+    margin-top: 1rem;
+}
+
+.form .verify input {
+    font-size: 2rem;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+
 .form form {
     margin: 2rem 0;
     width: 100%;
