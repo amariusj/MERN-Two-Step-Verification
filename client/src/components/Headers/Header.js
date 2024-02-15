@@ -33,6 +33,10 @@ export default function Header() {
 
   const { logout } = state.userApi
 
+  // Grab the user data from the state
+
+  const [user] = state.userApi.user
+
   // GRAB THE SETtOKEN FUNCTION FROM THE GLOBAL STATE
 
   const setToken = state.token[1]
@@ -74,30 +78,40 @@ export default function Header() {
 
   // Create the JSX for being logged in
 
-  const loggedOut =  <Nav className="ms-auto">
-                      <Nav.Link as={Link} to="/">Home</Nav.Link>
-                      <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                      <Nav.Link as={Link} to="/register">Register</Nav.Link>
-                    </Nav>
+  const loggedOut =  
 
-  const loggedIn =  <Nav className="ms-auto">
-                      <Nav.Link as={Link} to="/">Home</Nav.Link>
-                      <Nav.Link as={Link} onClick={logOut}>Sign Out</Nav.Link>
-                    </Nav>
+  <Navbar expand="lg" className="bg-light" variant="light">
+    <Container>
+      <Navbar.Brand as={Link} to="/">MERN Two-Step Verification App</Navbar.Brand>
+      <Navbar.Toggle aria-controls="menu" />
+      <Navbar.Collapse id="menu">
+        <Nav className="ms-auto">
+          <Nav.Link as={Link} to="/">Home</Nav.Link>
+          <Nav.Link as={Link} to="/login">Login</Nav.Link>
+          <Nav.Link as={Link} to="/register">Register</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
+
+  const loggedIn =  
+  
+  <Navbar expand="lg" className="bg-light" variant="light">
+    <Container>
+      <Navbar.Brand as={Link} to="/">Signed in as {user.firstName} {user.lastName}</Navbar.Brand>
+      <Navbar.Toggle aria-controls="menu" />
+      <Navbar.Collapse id="menu">
+        <Nav className="ms-auto">
+          <Nav.Link as={Link} to="/">Home</Nav.Link>
+          <Nav.Link onClick={logOut}>Sign out</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
 
   // Create the JSX for being logged out
 
   return (
-    <Navbar expand="lg" className="bg-light" variant="light">
-        <Container>
-            <Navbar.Brand as={Link} to="/">MERN Two-Step Verification App</Navbar.Brand>
-            <Navbar.Toggle aria-controls="menu" />
-            <Navbar.Collapse id="menu">
-                {
-                  isLogged ? loggedIn : loggedOut
-                }
-            </Navbar.Collapse>
-        </Container>
-    </Navbar>
+    isLogged ? loggedIn : loggedOut
   )
 }

@@ -25,6 +25,10 @@ export default function Home() {
 
     const [isLogged] = state.userApi.isLogged
 
+    // Grab the user data from the state
+
+    const [user] = state.userApi.user
+
     // RETURNS THE JSX TO THE CLIENT
     
     return (
@@ -36,7 +40,7 @@ export default function Home() {
                 <Row>
                     {
                         isLogged ? 
-                        <p>You are logged in</p> :
+                        <p>Hi {user.firstName}! You are currently logged in</p> :
                         <p>This app is designed to test the functionality behind two-step verification when using email and SMS. Feel free to register a new account or login to an existing account to try it!</p>
                     }
                 </Row>
