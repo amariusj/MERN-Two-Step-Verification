@@ -55,10 +55,10 @@ export function DataProvider({children}) {
 
     // CREATE A STATE TO HOLD ALL DATA
 
-    const state = useState({
+    const state = {
         token: [token, setToken],
         userApi: UserAPI(token)
-    })
+    }
 
     // RETURN THE CONTEXT WITHIN THE REACT FUNCTIONAL COMPONENT
 

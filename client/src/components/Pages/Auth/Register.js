@@ -46,7 +46,7 @@ export default function Register() {
 
     // GRAB THE STATE FROM GLOBAL STATE
 
-    const [state] = useContext(GlobalState)
+    const state = useContext(GlobalState)
 
     // GRAB THE FUNCTIONS FROM THE STATE
 

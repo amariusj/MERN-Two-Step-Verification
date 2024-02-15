@@ -191,7 +191,7 @@ const ctrl = {
 
                 return res.status(200).json({
                     accessToken,
-                    msg: "Your account was successfully created!"
+                    msg: "Your credentials were successfully verified!"
                 })
 
             }

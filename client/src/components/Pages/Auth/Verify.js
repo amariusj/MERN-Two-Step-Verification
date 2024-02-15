@@ -19,7 +19,7 @@ export default function Verify({sid, id, phoneNumber}) {
 
   // GRAB THE STATE FROM THE GLOBAL STATE
 
-  const [state] = useContext(GlobalState)
+  const state = useContext(GlobalState)
 
   // GRAB THE VERIFYSMS FUNCTION FROM THE USER API
 

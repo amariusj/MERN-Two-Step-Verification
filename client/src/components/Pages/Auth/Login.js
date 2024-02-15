@@ -23,7 +23,7 @@ export default function Login() {
 
     // GRAB THE STATE FROM GLOBAL STATE
 
-    const [state] = useContext(GlobalState)
+    const state = useContext(GlobalState)
 
     // GRAB FUNCTIONS FROM USER API
 
