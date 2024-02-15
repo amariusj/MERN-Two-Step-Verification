@@ -115,7 +115,7 @@ export default function Login() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control 
                                 type='password' 
-                                placeholder='****************' 
+                                placeholder='**********' 
                                 name="password" 
                                 onChange={handleChange}
                                 />
