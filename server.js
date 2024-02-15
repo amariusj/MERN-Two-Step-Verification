@@ -63,20 +63,20 @@ const app = express()
 
     const connect = async () => {
 
+        // AWAIT THE CONNECTION
         await mongoose.connect(uri)
-        .then(() => {
 
-            // LOG THE SUCCESSFUL CONNECTION
-            console.log(`Successfully connected to the database`)
+        // LOG THE SUCCESSFUL CONNECTION
+        console.log(`Successfully connected to the database`)
 
-        })
-        .catch((err) => {
-
-            // IF THERE'S AN ERROR CONNECTING, SEND IT TO THE CONSOLE
-            console.log(err.message)
-        })
     }
     connect()
+    .catch((err) => {
+
+        // IF THERE'S AN ERROR CONNECTING, SEND IT TO THE CONSOLE
+        console.log(err.message)
+    })
+    
 
 
 // ADD THE ROUTES TO THE SERVER
