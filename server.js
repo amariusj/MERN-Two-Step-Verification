@@ -74,7 +74,7 @@ const app = express()
     .catch((err) => {
 
         // IF THERE'S AN ERROR CONNECTING, SEND IT TO THE CONSOLE
-        console.log(err.message)
+        console.log(`There was an error connecting to your MongoDB database: ${err.message}`)
     })
     
 
